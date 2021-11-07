@@ -36,7 +36,7 @@ export class SVGResource extends BaseImageResource
      * @param {number} [options.height] - Rasterize SVG this high. Aspect ratio preserved if width not specified.
      * @param {boolean} [options.autoLoad=true] - Start loading right away.
      */
-    constructor(sourceBase64: string, options?: ISVGResourceOptions)
+    constructor(sourceBase64: HTMLImageElement|string, options?: ISVGResourceOptions)
     {
         options = options || {};
 
@@ -44,12 +44,16 @@ export class SVGResource extends BaseImageResource
         this._width = 0;
         this._height = 0;
 
-        /**
-         * Base64 encoded SVG element or URL for SVG file
-         * @readonly
-         * @member {string}
-         */
-        this.svg = sourceBase64;
+        if (sourceBase64 instanceof HTMLImageElement) {
+            this.svg = sourceBase64.src;
+        } else {
+            /**
+             * Base64 encoded SVG element or URL for SVG file
+             * @readonly
+             * @member {string}
+             */
+            this.svg = sourceBase64;
+        }
 
         /**
          * The source scale to apply when rasterizing on load
